@@ -1,0 +1,7 @@
+{
+  "restartable": "rs",
+  "events": {
+    "crash": "sh -c 'lsof -i :${PORT:-4000} -t | xargs kill'",
+    "exit": "sh -c 'lsof -i :${PORT:-4000} -t | xargs kill'"
+  }
+}
