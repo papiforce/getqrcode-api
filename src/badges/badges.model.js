@@ -36,14 +36,3 @@ const badgeSchema = new Schema({
 const BadgeModel = model("Badge", badgeSchema);
 
 module.exports = BadgeModel;
-
-// {
-//   "name": "Venus de Milo",
-//   "description": "On connait tous, j'ai qu'ça qu'à dire.",
-//   "picture": "https://cloudfront-eu-central-1.images.arcpublishing.com/leparisien/UWZHMQ2HPFF6BPSVWT4AVZLNVI.jpg",
-//   "rank": "SILVER",
-//   "coordinates": {
-//     "latitude": 48.864824,
-//     "longitude": 2.334595
-//   }
-// }
