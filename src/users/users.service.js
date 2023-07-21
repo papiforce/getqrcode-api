@@ -1,6 +1,5 @@
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
 const UserModel = require("./users.model");
+const BadgeModel = require("../badges/badges.model");
 const logger = require("../config/logger");
 const { httpError } = require("../utils");
 
@@ -23,8 +22,6 @@ const getAll = async (req) => {
 };
 
 const updateUserProfile = async (req) => {
-  const { username, description } = req.body;
-
   const userId = req.params.userId;
 
   const user = await UserModel.findById(userId);
@@ -53,7 +50,7 @@ const updateUserProfile = async (req) => {
     }
   }
 
-  const updatedUser = Object.assign(user, { username, description });
+  const updatedUser = Object.assign(user, req.body);
 
   await updatedUser.save();
 
@@ -62,7 +59,40 @@ const updateUserProfile = async (req) => {
   return updatedUser;
 };
 
+const addBadge = async (req) => {
+  const { id } = req.params;
+
+  const user = await UserModel.findById(req.user._id);
+
+  if (!user) throw new httpError(404, "Cet utilisateur n'existe pas");
+
+  if (user.badges.includes(id))
+    throw new httpError(404, "Vous possédez déjà ce badge");
+
+  const badge = await BadgeModel.findById(id);
+
+  if (!badge) throw new httpError(404, "Ce badge n'existe pas");
+
+  const updatedUser = Object.assign(user, { badges: [...user.badges, id] });
+
+  await updatedUser.save();
+
+  logger.info(`${req.originalUrl} : 200 (PUT)`);
+
+  return updatedUser;
+};
+
+const getBadges = async (req) => {
+  const user = await UserModel.findById(req.user._id).populate("badges");
+
+  if (!user) throw new httpError(404, "Cet utilisateur n'existe pas");
+
+  return user;
+};
+
 module.exports = {
   getAll,
   updateUserProfile,
+  addBadge,
+  getBadges,
 };

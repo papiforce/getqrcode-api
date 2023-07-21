@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema, model } = mongoose;
+const { Schema, model, Types } = mongoose;
 
 const userSchema = new Schema({
   email: {
@@ -36,6 +36,12 @@ const userSchema = new Schema({
     required: true,
     enum: ["MEMBER", "ADMIN"],
     default: "MEMBER",
+  },
+  badges: {
+    type: [Types.ObjectId],
+    required: false,
+    ref: "Badge",
+    default: null,
   },
 });
 
