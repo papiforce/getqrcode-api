@@ -91,9 +91,15 @@ const getBadges = async (req) => {
 
   const sanitizedBadges = badges.filter((badge) => badge.isDelete === false);
 
-  user.badges = sanitizedBadges;
-
-  return user;
+  return {
+    _id: user._id,
+    email: user.email,
+    isDelete: user.isDelete,
+    username: user.username,
+    picture: user.picture,
+    roles: user.roles,
+    badges: sanitizedBadges,
+  };
 };
 
 module.exports = {
