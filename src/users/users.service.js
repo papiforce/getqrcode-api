@@ -87,6 +87,12 @@ const getBadges = async (req) => {
 
   if (!user) throw new httpError(404, "Cet utilisateur n'existe pas");
 
+  const { badges } = user;
+
+  const sanitizedBadges = badges.filter((badge) => badge.isDelete === false);
+
+  user.badges = sanitizedBadges;
+
   return user;
 };
 
